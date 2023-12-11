@@ -2,10 +2,8 @@ const vscode = require('vscode');
 const vbspretty = require('./src/vbspretty');
 const path = require('path');
 const {
-    window,
     Position,
     Range,
-    workspace
 } = require('vscode');
 
 /**
