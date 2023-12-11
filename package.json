@@ -2,7 +2,7 @@
   "name": "vba-formatter",
   "displayName": "VBA Formatter",
   "description": "VBA Formatter",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "engines": {
     "vscode": "^1.85.0"
   },
@@ -53,5 +53,17 @@
     "typescript": "^5.3.2",
     "@vscode/test-cli": "^0.0.4",
     "@vscode/test-electron": "^2.3.8"
-  }
+  },
+	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/threatcon/vba-formatter.git"
+	},
+	"homepage": "https://github.com/threatcon/vba-formatter",
+	"__metadata": {
+		"id": "",
+		"publisherDisplayName": "threatcon",
+		"publisherId": "",
+		"isPreReleaseVersion": false
+	}
 }

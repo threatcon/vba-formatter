@@ -59,6 +59,9 @@ function getStartLine(text, fileExtension) {
 		const lineNumber = findLineNumber(text,'Attribute VB_Name');
 		return lineNumber;
 	}
+	else {
+		return 0;
+	}
 }
 
 function findLineNumber(text, searchText) {

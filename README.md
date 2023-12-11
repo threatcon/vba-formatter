@@ -23,8 +23,9 @@ None
 None at this time.
 
 ## Release Notes
+0.0.1 - Inital release
+0.0.2 - Added default line start of 0 when file does not have VBA headers
 
-
-### 1.0.0
+### 0.0.2
 
 **Enjoy!**
