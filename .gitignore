@@ -3,3 +3,5 @@ node_modules
 *.vsix
 .github
 src/main.js
+__tests__
+vsc-extension-quickstart.md
