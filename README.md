@@ -24,7 +24,7 @@ None at this time.
 
 ## Release Notes
 
-### 0.0.1 - 
+### 0.0.1
 Iniital release
 
 ### 0.0.2
