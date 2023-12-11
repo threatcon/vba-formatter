@@ -1,4 +1,4 @@
-# vba-formatter README
+# VBA Formatter 
 This is a VS Code extension to indent VBA and VBS files in the active text editor. As the title states, it's mainly for VBA files.
 
 This is a fork/adaptation of VBSPretty by lenilsondc, Lenilson de Castro.
