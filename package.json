@@ -1,7 +1,7 @@
 {
   "name": "vba-formatter",
   "displayName": "VBA Formatter",
-  "description": "formats vba",
+  "description": "VBA Formatter",
   "version": "0.0.1",
   "engines": {
     "vscode": "^1.85.0"
@@ -9,13 +9,36 @@
   "categories": [
     "Other"
   ],
-  "activationEvents": [],
+  "activationEvents": [
+    "onLanguage:vbs",
+    "onLanguage:vb",
+    "onLanguage:vba",
+    "onLanguage:VBScript"   
+  ],
   "main": "./extension.js",
   "contributes": {
-    "commands": [{
-      "command": "vba-formatter.helloWorld",
-      "title": "Hello World"
-    }]
+      "commands": [
+        {
+          "when": "!editorReadonly && resourceExtname =~ /\\.bas$|\\.cls$|\\.frm$/",
+          "command": "extension.pretty",
+          "title": "VBA-Formatter"
+        }
+      ],
+      "keybindings": [
+        {
+          "command": "extension.pretty",
+          "key": "ctrl+alt+b"
+        }
+      ],
+      "menus": {
+        "editor/context": [
+          {
+            "when": "!editorReadonly && resourceExtname =~ /\\.bas$|\\.cls$|\\.frm$/",
+            "command": "extension.pretty",
+            "group": "navigation"
+          }
+        ]
+      }
   },
   "scripts": {
     "lint": "eslint .",

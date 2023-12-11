@@ -1,35 +1,82 @@
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
 const vscode = require('vscode');
-var startpretty = require('./src/cli');
-
-// This method is called when your extension is activated
-// Your extension is activated the very first time the command is executed
+const vbspretty = require('./src/vbspretty');
+const path = require('path');
+const {
+    window,
+    Position,
+    Range,
+    workspace
+} = require('vscode');
 
 /**
  * @param {vscode.ExtensionContext} context
  */
 function activate(context) {
+	vscode.window.showInformationMessage('VBA Beautifier is now active!');
 
-	// Use the console to output diagnostic information (console.log) and errors (console.error)
-	// This line of code will only be executed once when your extension is activated
-	console.log('Congratulations, your extension "vba-formatter" is now active!');
+	let disposable = vscode.commands.registerCommand('extension.pretty', function () {
+		let acEditor = vscode.window.activeTextEditor;
+		if (acEditor && acEditor.document.languageId === 'vbs' || acEditor.document.languageId === 'vb') {
+		
+			var document = acEditor.document;
+			var inFile = document.fileName;
+			const documentText = document.getText();
+			const fileExtension = getFileExtension(inFile);
+			const start = new Position(getStartLine(documentText, fileExtension),0);
+			const end = new Position(document.lineCount +1 ,0);
+			const range = new Range(start, end);
+			const sourceFile = document.getText(range);
+			
+			var outFile = vbspretty({
+				level: 0,
+				indentChar: '\t',
+				breakLineChar: '\n',
+				breakOnSeperator: false,
+				removeComments: false,
+				source: sourceFile,
+			});
 
-	// The command has been defined in the package.json file
-	// Now provide the implementation of the command with  registerCommand
-	// The commandId parameter must match the command field in package.json
-	let disposable = vscode.commands.registerCommand('vba-formatter.pretty', function () {
-		// The code you place here will be executed every time your command is executed
-
-		// Display a message box to the user
-		vscode.window.showInformationMessage('Hello World from VBA Formatter!');
+			console.info('Writing to vbs file:', inFile);
+			acEditor.edit(editBuilder => {
+				editBuilder.replace(range, outFile);
+			});
+			//console.log(outFile);
+			console.info('Done!');
+			vscode.window.showInformationMessage('Beautifying');
+		} else {
+			vscode.window.showInformationMessage('Not a Visual Basic or VB Script file!');
+		}
 	});
 
 	context.subscriptions.push(disposable);
 }
+//exports.activate = activate;
 
-// This method is called when your extension is deactivated
-function deactivate() {}
+function getStartLine(text, fileExtension) {
+
+	if (fileExtension === '.cls') {
+		const lineNumber = findLineNumber(text,'Attribute VB_Exposed');
+		return lineNumber;
+	} else if (fileExtension === '.bas') {
+		const lineNumber = findLineNumber(text,'Attribute VB_Name');
+		return lineNumber;
+	}
+}
+
+function findLineNumber(text, searchText) {
+	const lines = text.split('\n');
+	const lineNumber = lines.findIndex(line => line.includes(searchText)) + 1;
+	return lineNumber;
+}
+
+function getFileExtension(fileName) {
+	return path.extname(fileName);
+}
+
+
+function deactivate() {
+	vscode.window.showInformationMessage('deactivated');
+}
 
 module.exports = {
 	activate,
