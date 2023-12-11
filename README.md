@@ -28,6 +28,6 @@ None at this time.
 Iniital release
 
 ### 0.0.2
-Added default line start of 0 when file does not have VBA headers
+Added default line start at 0 when file does not have VBA headers
 
 **Enjoy!**
