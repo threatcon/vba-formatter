@@ -2,6 +2,7 @@
   "name": "vba-formatter",
   "displayName": "VBA Formatter",
   "description": "Format Microsoft VBA and VBScript files.",
+  "publisher": "Antonio Turner",
   "version": "0.0.3",
   "engines": {
     "vscode": "^1.85.0"
@@ -10,6 +11,8 @@
     "Other",
     "Formatters"
   ],
+  "icon": "images/icon.png",
+  "pricing": "Free",
   "activationEvents": [
     "onLanguage:vbs",
     "onLanguage:vb",
@@ -82,9 +85,9 @@
   },
   "homepage": "https://github.com/threatcon/vba-formatter",
   "__metadata": {
-    "id": "",
-    "publisherDisplayName": "threatcon",
-    "publisherId": "",
+    "id": "threatcon",
+    "publisherDisplayName": "Antonio Turner",
+    "publisherId": "threatcon",
     "isPreReleaseVersion": false
   }
 }
