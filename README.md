@@ -32,5 +32,6 @@ Added default line start at 0 when file does not have VBA headers
 
 ### 0.0.3
 Added extension configuration
+Added extension as Document Format Provider. This allows the user to set the extension as the default formatter for the VB/VBS language.
 
 **Enjoy!**

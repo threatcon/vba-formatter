@@ -12,6 +12,7 @@ const breakLineCharValue = '\n';
 const levelValue = contributions.get('level');
 const breakOnSeperatorValue = contributions.get('breakOnSeperator');
 const removeCommentsValue = contributions.get('removeComments');
+const editor = vscode.window.activeTextEditor;
 
 /**
  * @param {vscode.ExtensionContext} context
@@ -19,39 +20,53 @@ const removeCommentsValue = contributions.get('removeComments');
 function activate(context) {
 	vscode.window.showInformationMessage('VBA Beautifier is now active!');
 
-	let disposable = vscode.commands.registerTextEditorCommand('extension.pretty', (editor, edit) => {
-		//let acEditor = vscode.window.activeTextEditor;
-		if (editor && editor.document.languageId === 'vbs' || editor.document.languageId === 'vb') {
+	let buttonActivation = vscode.commands.registerTextEditorCommand('extension.pretty', (editor) => {
+		let document = editor.document
+		prepareDocument(document)
+	});
 
-			var document = editor.document;
-			var inFile = document.fileName;
-			const documentText = document.getText();
-			const fileExtension = getFileExtension(inFile);
-			const start = new Position(getStartLine(documentText, fileExtension), 0);
-			const end = new Position(document.lineCount + 1, 0);
-			const range = new Range(start, end);
-			const sourceFile = document.getText(range);
-			vscode.window.showInformationMessage('Beautifying');
+	context.subscriptions.push(buttonActivation);
 
-			let outFile = vbspretty({
-				level: levelValue,
-				indentChar: indentCharValue,
-				breakLineChar: breakLineCharValue,
-				breakOnSeperator: breakOnSeperatorValue,
-				removeComments: removeCommentsValue,
-				source: sourceFile,
-			});
-
-			edit.replace(range, outFile);
-
-		} else {
-			vscode.window.showInformationMessage('Not a Visual Basic or VB Script file!');
+	let formatFunction = vscode.languages.registerDocumentFormattingEditProvider('vbs', {
+		provideDocumentFormattingEdits: (document) => {
+			prepareDocument(document)
 		}
 	});
 
-	context.subscriptions.push(disposable);
+	context.subscriptions.push(formatFunction);
 }
-//exports.activate = activate;
+
+function prepareDocument(document) {
+
+	if (editor && editor.document.languageId === 'vbs' || editor.document.languageId === 'vb') {
+
+		var inFile = document.fileName;
+		const documentText = document.getText();
+		const fileExtension = getFileExtension(inFile);
+		const start = new Position(getStartLine(documentText, fileExtension), 0);
+		const end = new Position(document.lineCount + 1, 0);
+		const range = new Range(start, end);
+		const sourceFile = document.getText(range);
+
+		vscode.window.showInformationMessage('Beautifying');
+
+		let outFile = vbspretty({
+			level: levelValue,
+			indentChar: indentCharValue,
+			breakLineChar: breakLineCharValue,
+			breakOnSeperator: breakOnSeperatorValue,
+			removeComments: removeCommentsValue,
+			source: sourceFile,
+		});
+		console.log(outFile);
+		const edit = new vscode.WorkspaceEdit();
+		edit.replace(document.uri, range, outFile);
+		return vscode.workspace.applyEdit(edit)
+
+	} else {
+		vscode.window.showInformationMessage('Not a Visual Basic or VB Script file!');
+	}
+}
 
 function getStartLine(text, fileExtension) {
 
