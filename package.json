@@ -2,7 +2,7 @@
   "name": "vba-formatter",
   "displayName": "VBA Formatter",
   "description": "VBA Formatter",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "engines": {
     "vscode": "^1.85.0"
   },
@@ -13,32 +13,52 @@
     "onLanguage:vbs",
     "onLanguage:vb",
     "onLanguage:vba",
-    "onLanguage:VBScript"   
+    "onLanguage:VBScript"
   ],
   "main": "./extension.js",
   "contributes": {
-      "commands": [
-        {
-          "when": "!editorReadonly && resourceExtname =~ /\\.bas$|\\.cls$|\\.frm$/",
-          "command": "extension.pretty",
-          "title": "VBA-Formatter"
+    "configuration": {
+      "title": "VBA Formatter",
+      "properties": {
+        "vbaFormatter.level": {
+          "type": "number",
+          "default": 0,
+          "description": "Indent level to start off"
+        },
+        "vbaFormatter.breakOnSeperator": {
+          "type": "boolean",
+          "default": false,
+          "description": "Whether it breaks the line on occurrences of the \":\" statement separator."
+        },
+        "vbaFormatter.removeComments": {
+          "type": "boolean",
+          "default": false,
+          "description": "Whether it removes comments from the input."
         }
-      ],
-      "keybindings": [
-        {
-          "command": "extension.pretty",
-          "key": "ctrl+alt+b"
-        }
-      ],
-      "menus": {
-        "editor/context": [
-          {
-            "when": "!editorReadonly && resourceExtname =~ /\\.bas$|\\.cls$|\\.frm$/",
-            "command": "extension.pretty",
-            "group": "navigation"
-          }
-        ]
       }
+    },
+    "commands": [
+      {
+        "when": "!editorReadonly && resourceExtname =~ /\\.bas$|\\.cls$|\\.vbs$|\\.vb$|\\.frm$/",
+        "command": "extension.pretty",
+        "title": "VBA-Formatter"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "extension.pretty",
+        "key": "ctrl+alt+b"
+      }
+    ],
+    "menus": {
+      "editor/context": [
+        {
+          "when": "!editorReadonly && resourceExtname =~ /\\.bas$|\\.cls$|\\.vbs$|\\.vb$|\\.frm$/",
+          "command": "extension.pretty",
+          "group": "navigation"
+        }
+      ]
+    }
   },
   "scripts": {
     "lint": "eslint .",
@@ -54,16 +74,16 @@
     "@vscode/test-cli": "^0.0.4",
     "@vscode/test-electron": "^2.3.8"
   },
-	"license": "MIT",
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/threatcon/vba-formatter.git"
-	},
-	"homepage": "https://github.com/threatcon/vba-formatter",
-	"__metadata": {
-		"id": "",
-		"publisherDisplayName": "threatcon",
-		"publisherId": "",
-		"isPreReleaseVersion": false
-	}
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/threatcon/vba-formatter.git"
+  },
+  "homepage": "https://github.com/threatcon/vba-formatter",
+  "__metadata": {
+    "id": "",
+    "publisherDisplayName": "threatcon",
+    "publisherId": "",
+    "isPreReleaseVersion": false
+  }
 }

@@ -30,4 +30,7 @@ Iniital release
 ### 0.0.2
 Added default line start at 0 when file does not have VBA headers
 
+### 0.0.3
+Added extension configuration
+
 **Enjoy!**

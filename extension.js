@@ -6,6 +6,13 @@ const {
     Range,
 } = require('vscode');
 
+const contributions = vscode.workspace.getConfiguration('vbaFormatter') ;
+const indentCharValue = '\t';
+const breakLineCharValue = '\n';
+const levelValue = contributions.get('level');
+const breakOnSeperatorValue = contributions.get('breakOnSeperator');
+const removeCommentsValue = contributions.get('removeComments');
+
 /**
  * @param {vscode.ExtensionContext} context
  */
@@ -24,13 +31,15 @@ function activate(context) {
 			const end = new Position(document.lineCount +1 ,0);
 			const range = new Range(start, end);
 			const sourceFile = document.getText(range);
+
+			//vscode.window.showInformationMessage(levelValue + ' ' + breakOnSeperatorValue + ' ' + removeCommentsValue + ' ' + indentCharValue + ' ' + breakLineCharValue );
 			
 			var outFile = vbspretty({
-				level: 0,
-				indentChar: '\t',
-				breakLineChar: '\n',
-				breakOnSeperator: false,
-				removeComments: false,
+				level: levelValue,
+				indentChar: indentCharValue,
+				breakLineChar: breakLineCharValue,
+				breakOnSeperator: breakOnSeperatorValue,
+				removeComments: removeCommentsValue,
 				source: sourceFile,
 			});
 
