@@ -2,11 +2,11 @@ const vscode = require('vscode');
 const vbspretty = require('./src/vbspretty');
 const path = require('path');
 const {
-    Position,
-    Range,
+	Position,
+	Range,
 } = require('vscode');
 
-const contributions = vscode.workspace.getConfiguration('vbaFormatter') ;
+const contributions = vscode.workspace.getConfiguration('vbaFormatter');
 const indentCharValue = '\t';
 const breakLineCharValue = '\n';
 const levelValue = contributions.get('level');
@@ -19,22 +19,21 @@ const removeCommentsValue = contributions.get('removeComments');
 function activate(context) {
 	vscode.window.showInformationMessage('VBA Beautifier is now active!');
 
-	let disposable = vscode.commands.registerCommand('extension.pretty', function () {
-		let acEditor = vscode.window.activeTextEditor;
-		if (acEditor && acEditor.document.languageId === 'vbs' || acEditor.document.languageId === 'vb') {
-		
-			var document = acEditor.document;
+	let disposable = vscode.commands.registerTextEditorCommand('extension.pretty', (editor, edit) => {
+		//let acEditor = vscode.window.activeTextEditor;
+		if (editor && editor.document.languageId === 'vbs' || editor.document.languageId === 'vb') {
+
+			var document = editor.document;
 			var inFile = document.fileName;
 			const documentText = document.getText();
 			const fileExtension = getFileExtension(inFile);
-			const start = new Position(getStartLine(documentText, fileExtension),0);
-			const end = new Position(document.lineCount +1 ,0);
+			const start = new Position(getStartLine(documentText, fileExtension), 0);
+			const end = new Position(document.lineCount + 1, 0);
 			const range = new Range(start, end);
 			const sourceFile = document.getText(range);
+			vscode.window.showInformationMessage('Beautifying');
 
-			//vscode.window.showInformationMessage(levelValue + ' ' + breakOnSeperatorValue + ' ' + removeCommentsValue + ' ' + indentCharValue + ' ' + breakLineCharValue );
-			
-			var outFile = vbspretty({
+			let outFile = vbspretty({
 				level: levelValue,
 				indentChar: indentCharValue,
 				breakLineChar: breakLineCharValue,
@@ -43,13 +42,8 @@ function activate(context) {
 				source: sourceFile,
 			});
 
-			console.info('Writing to vbs file:', inFile);
-			acEditor.edit(editBuilder => {
-				editBuilder.replace(range, outFile);
-			});
-			//console.log(outFile);
-			console.info('Done!');
-			vscode.window.showInformationMessage('Beautifying');
+			edit.replace(range, outFile);
+
 		} else {
 			vscode.window.showInformationMessage('Not a Visual Basic or VB Script file!');
 		}
@@ -62,10 +56,10 @@ function activate(context) {
 function getStartLine(text, fileExtension) {
 
 	if (fileExtension === '.cls') {
-		const lineNumber = findLineNumber(text,'Attribute VB_Exposed');
+		const lineNumber = findLineNumber(text, 'Attribute VB_Exposed');
 		return lineNumber;
 	} else if (fileExtension === '.bas') {
-		const lineNumber = findLineNumber(text,'Attribute VB_Name');
+		const lineNumber = findLineNumber(text, 'Attribute VB_Name');
 		return lineNumber;
 	}
 	else {
