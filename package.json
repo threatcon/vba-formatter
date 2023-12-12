@@ -2,7 +2,7 @@
   "name": "vba-formatter",
   "displayName": "VBA Formatter",
   "description": "Format Microsoft VBA and VBScript files.",
-  "publisher": "Antonio Turner",
+  "publisher": "threatcon",
   "version": "0.0.3",
   "engines": {
     "vscode": "^1.85.0"
